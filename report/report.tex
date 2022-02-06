@@ -1,0 +1,175 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage{paralist}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\oddsidemargin 0mm
+\evensidemargin 0mm
+\textwidth 160mm
+\textheight 200mm
+
+\pagestyle {plain}
+\pagenumbering{arabic}
+
+\newcounter{stepnum}
+
+\title{Assignment 2 Solution}
+\author{Joshua Sam}
+\date{\today}
+
+\begin {document}
+
+\maketitle
+
+This report discusses the testing phase for \verb|BodyT|, \verb|CircleT|, \verb|TriangleT| and \verb|Scene| classes.  It also discusses the results
+of running the same tests on the partner files. The assignment specifications
+are then critiqued and the requested discussion questions are answered.
+
+\section{Testing of the Original Program}
+
+The tests were done with the pytest framework which allowed easy assertions as well as use copies of each object for each test function.
+The program successfully passed all the test cases provided. All methods except setters, getters and the sim method of \verb|Scene.py|,  were tested against.
+A total of \verb|22| tests were passed. The test cases selected include:
+\begin{itemize}
+\item Floating point numbers which were selected to test if the output was approximately equal to the expected result (Since floating point numbers cannot
+ be compared for exact equality).
+\item Negative numbers which were selected to test if a \verb|ValueError| is raised. For instance, a ValueError is 
+raised if the mass of a \verb|Circle|, \verb|Triangle| or a \verb|Body| is negative. However, this case is not tested in \verb|test_driver.py| after reviewing the test file again.
+\item The number \verb|0| was selected to test for any \verb|ValueError| raised and any possible errors raised during calculations due to \verb|ZeroDivisionError|. For instance, 
+a \verb|ValueError| is raised if the mass is 0 for any shape.
+\end{itemize}
+
+\section{Results of Testing Partner's Code}
+
+All the test cases passed successfully. The test cases used to test were not consistent, i.e. a few methods were only tested with positive floating point numbers. Not all methods
+were tested (\verb|sim|) against . Cases which would raise \verb|ValueError| were not tested against. A change I would include in my implementation is to make the local functions used in \verb|BodyT| private, thus restricting access to those functions from other classes as this is a violation of the OOP principal of \verb|Data Encapsulation|. The particular local functions mentioned in the specification are only meant to be used in the \verb|BodyT| class. 
+
+
+Doing this exercise helped me review my implementation once again with the design specifications and partner source code. This helped me find potential errors and  bad practices used during implementation. This also made me realize the importance of checking my implementation before it is submited or used. Comparing the results of this exercise to that of Assignment 1, it is observed that more testcases are being used and the scope of the test cases used are much broader in this assignment.
+
+\section{Critique of Given Design Specification}
+I feel this design specification is very straighforward in explaining the requirements. The given specification is formal and this helps communicate the requirements clearly and prevent any ambiguity as compared to using natural language to communicate. I found that Understanding the formal notations used were a bit tedious and overwhelming as I was not sure of how to interpret it in natural language which cost me time. 
+
+The use of an interface with abstract methods gave a general idea about the behaviour of the object and how it is used in other modules. This helped me understand how each module was structured.
+
+Using local functions to perform mathematical computuations as observed in \verb|BodyT| and \verb|Scene| helped understand the mathematical representation mentioned in the specification.
+
+A drawback observed in the specification is that it doesnt specify the access modifiers for a method. This made me assume them to be public.
+
+Overall, I found that this specification is not very beginner-friendly one, since it uses formal language to represent requirements but it is extremely helpfull to understand the semantics of a program.
+
+\section{Answers}
+
+\begin{enumerate}[a)]
+
+\item In general no, It is not necesarry to write a unit testcase to test setters and getters if all they do are get values and set values. But it would be a good idea to write unit test for them if they do more than just get and set i.e. if they perform some sort of mathematical computation or if they have some complexity to them.
+
+\item We could predefine Fx and Fy in the testing file.
+
+\item One way we could do automated tests for plot.py is using the inbuilt matplotlib.testing package, but this package is still in the testing process and isn't officially released. Another possible way to compare two plots is to save the plots using the savefig() method and then compare them using checksum functions such as MD5 which produces a 128 bit hash values.
+
+\item $(\exists \  xcalc, xtrue \ \cdot \  \frac{|| x_\text{calc} - x_\text{true} ||} {||x_\text{true}||} < \epsilon \label{Eq_calcError})$
+
+\item No, there shouldn't be exceptions for negative cordinates. Center of mass is a point in the plane or space. If the cordinate values are positive or negative  it doesnt mean that the center of mass is positive or negative in itself. The centre of mass is just an absolute value of the distance from the origin. 
+
+\item From the state invariant we can understand that the sides of a triangle is always greater than 0 and that the mass is always greater than 0 or in other words, the sides of a triangle cannot
+be 0 or less or the mass of a triangle cannot be 0 or less.
+
+\item list = [i**(1/2) for i in range(5,20,2)]
+
+\item \begin{lstlisting}[language=Python]
+def lower_string(str):
+  str_updated = ""
+  for i in str:
+    if not(i.isupper()):
+      str_updated += i
+  return str_updated
+\end{lstlisting}
+
+\item The principle of generality means to solve a more general problem than the problem at hand. Abstraction is often used to extract a general solution from a more specefic solution. In
+a way we can say that abstraction is an application of generality.
+
+\item A module used by many other modules is generally better because it is more stable and less fragile.
+
+\end{enumerate}
+
+\newpage
+
+\lstset{language=Python, basicstyle=\tiny, breaklines=true, showspaces=false,
+  showstringspaces=false, breakatwhitespace=true}
+%\lstset{language=C,linewidth=.94\textwidth,xleftmargin=1.1cm}
+
+\def\thesection{\Alph{section}}
+
+\section{Code for Shape.py}
+
+\noindent \lstinputlisting{../src/Shape.py}
+
+\newpage
+
+\section{Code for CircleT.py}
+
+\noindent \lstinputlisting{../src/CircleT.py}
+
+\newpage
+
+\section{Code for TriangleT.py}
+
+\noindent \lstinputlisting{../src/TriangleT.py}
+
+\newpage
+
+\section{Code for BodyT.py}
+
+\noindent \lstinputlisting{../src/BodyT.py}
+
+\newpage
+
+\section{Code for Scene.py}
+
+\noindent \lstinputlisting{../src/Scene.py}
+
+\newpage
+
+\section{Code for Plot.py}
+
+\noindent \lstinputlisting{../src/Plot.py}
+
+\newpage
+
+\section{Code for test\_driver.py}
+
+\noindent \lstinputlisting{../src/test_driver.py}
+
+\newpage
+
+\section{Code for Partner's CircleT.py}
+
+\noindent \lstinputlisting{../partner/CircleT.py}
+
+\newpage
+
+\section{Code for Partner's TriangleT.py}
+
+\noindent \lstinputlisting{../partner/TriangleT.py}
+
+\newpage
+
+\section{Code for Partner's BodyT.py}
+
+\noindent \lstinputlisting{../partner/BodyT.py}
+
+\newpage
+
+\section{Code for Partner's Scene.py}
+
+\noindent \lstinputlisting{../partner/Scene.py}
+
+\newpage
+
+\end {document}
